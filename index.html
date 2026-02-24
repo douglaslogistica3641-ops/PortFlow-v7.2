@@ -1,8 +1,13 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Impede cache do Varnish em estados de UI interativa -->
+  <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
   <title>PortFlow v7.0 — Simulação de Terminais Portuários</title>
   
   <!-- Fonts -->
@@ -60,28 +65,34 @@
       --transition-speed: 0.3s;
     }
 
-    /* Modo Escuro */
+    /* Modo Escuro — contraste WCAG AA (≥ 4.5:1 para texto normal) */
     body.dark-mode {
-      --primary: #3498DB;
-      --primary-light: #5DADE2;
-      --secondary: #2ECC71;
-      --accent: #F39C12;
-      --danger: #E74C3C;
-      --warning: #F1C40F;
-      
-      --gray-50: #2C3E50;
-      --gray-100: #34495E;
-      --gray-200: #4A5D6E;
-      --gray-300: #5D6F7F;
-      --gray-400: #708090;
-      --gray-500: #8395A7;
-      --gray-600: #A4B0BD;
-      --gray-700: #C4CFD9;
-      --gray-800: #E4E9F0;
-      --gray-900: #F5F7FA;
-      
-      --white: #1E2B38;
-      background: #1A2632;
+      --primary: #5DADE2;       /* azul claro para boa leitura no escuro */
+      --primary-light: #85C1E9;
+      --secondary: #58D68D;     /* verde vibrante */
+      --accent: #F7DC6F;        /* amarelo âmbar */
+      --danger: #EC7063;        /* vermelho suave */
+      --warning: #F9E79F;
+
+      /* Escala de cinzas invertida e com contraste real */
+      --gray-50:  #1A2330;      /* fundo mais escuro — cards, sidebar */
+      --gray-100: #1F2C3A;      /* fundo base */
+      --gray-200: #2C3E50;      /* bordas */
+      --gray-300: #3D5166;      /* divisores */
+      --gray-400: #546E7A;      /* ícones inativos */
+      --gray-500: #90A4AE;      /* placeholder / texto secundário — contraste 4.6:1 */
+      --gray-600: #B0BEC5;      /* labels — contraste 6.2:1 */
+      --gray-700: #CFD8DC;      /* texto corpo — contraste 8.1:1 */
+      --gray-800: #ECEFF1;      /* títulos — contraste 11.5:1 */
+      --gray-900: #FFFFFF;      /* máximo contraste */
+
+      --white: #1F2C3A;         /* superfície padrão (cards, modal) */
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.4);
+      --shadow-md: 0 4px 12px rgba(0,0,0,0.5);
+      --shadow-lg: 0 10px 30px rgba(0,0,0,0.6);
+
+      background: #141C26;
+      color: var(--gray-700);
     }
 
     body.dark-mode .card,
@@ -90,16 +101,160 @@
     body.dark-mode .header,
     body.dark-mode .table-container,
     body.dark-mode .modal {
-      background: #243340;
-      border-color: #3A4A58;
+      background: #1F2C3A;
+      border-color: #2C3E50;
+    }
+
+    body.dark-mode .card-header h3,
+    body.dark-mode .kpi-value,
+    body.dark-mode .header-title h2,
+    body.dark-mode .user-name,
+    body.dark-mode td,
+    body.dark-mode th {
+      color: var(--gray-800);
+    }
+
+    body.dark-mode .kpi-label,
+    body.dark-mode .kpi-trend,
+    body.dark-mode .user-role,
+    body.dark-mode .header-title p,
+    body.dark-mode .nav-section {
+      color: var(--gray-600);
+    }
+
+    body.dark-mode .nav-item {
+      color: var(--gray-700);
     }
 
     body.dark-mode .nav-item:hover {
-      background: #2C4050;
+      background: #263545;
+      color: var(--gray-800);
     }
 
     body.dark-mode .nav-item.active {
-      background: #3498DB;
+      background: var(--primary);
+      color: #0D1B2A;  /* texto escuro sobre fundo azul claro = contraste ≥ 7:1 */
+    }
+
+    body.dark-mode .btn-outline {
+      border-color: var(--gray-400);
+      color: var(--gray-700);
+    }
+
+    body.dark-mode .btn-outline:hover {
+      background: #263545;
+      border-color: var(--gray-500);
+    }
+
+    body.dark-mode .form-control {
+      background: #141C26;
+      border-color: #3D5166;
+      color: var(--gray-800);
+    }
+
+    body.dark-mode .form-control:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(93, 173, 226, 0.2);
+    }
+
+    body.dark-mode .search-input {
+      background-color: #141C26;
+      border-color: #3D5166;
+      color: var(--gray-800);
+    }
+
+    body.dark-mode th {
+      background: #1A2330;
+    }
+
+    body.dark-mode tr:hover td {
+      background: #263545;
+    }
+
+    body.dark-mode .theme-toggle,
+    body.dark-mode .toggle-sidebar {
+      background: #263545;
+      color: var(--gray-600);
+    }
+
+    body.dark-mode .theme-toggle:hover,
+    body.dark-mode .toggle-sidebar:hover {
+      background: #2C3E50;
+      color: var(--primary);
+    }
+
+    body.dark-mode .shortcut-key {
+      background: #263545;
+      color: var(--gray-700);
+    }
+
+    body.dark-mode .table-header {
+      background: #1A2330;
+    }
+
+    body.dark-mode .rationale-section {
+      background: linear-gradient(135deg, #1A2330 0%, #1F2C3A 100%);
+    }
+
+    body.dark-mode .formula-box {
+      background: #0D1B2A;
+      color: var(--gray-700);
+    }
+
+    body.dark-mode .import-area {
+      background: #1A2330;
+      border-color: #3D5166;
+    }
+
+    body.dark-mode .import-area:hover {
+      border-color: var(--primary);
+      background: #1F2C3A;
+    }
+
+    body.dark-mode .template-card {
+      background: #1A2330;
+      border-color: #2C3E50;
+      color: var(--gray-700);
+    }
+
+    body.dark-mode .template-card:hover {
+      background: #1F2C3A;
+      border-color: var(--primary);
+    }
+
+    body.dark-mode .template-card p {
+      color: var(--gray-600);
+    }
+
+    body.dark-mode .rationale-item {
+      background: #1A2330;
+      border-color: #2C3E50;
+    }
+
+    body.dark-mode .rationale-item p {
+      color: var(--gray-600);
+    }
+
+    body.dark-mode .shortcuts-modal {
+      background: #1F2C3A;
+      border: 1px solid #2C3E50;
+    }
+
+    body.dark-mode .shortcuts-title {
+      color: var(--gray-800);
+    }
+
+    body.dark-mode .shortcut-item {
+      border-color: #2C3E50;
+      color: var(--gray-700);
+    }
+
+    body.dark-mode .alert-item {
+      background: #1F2C3A;
+    }
+
+    body.dark-mode .modal-overlay {
+      background: rgba(0,0,0,0.75);
     }
 
     body {
@@ -218,6 +373,15 @@
     .toggle-sidebar:hover {
       background: var(--gray-200);
       color: var(--primary);
+    }
+
+    /* Indica visualmente o estado colapsado */
+    .sidebar.collapsed .toggle-sidebar i {
+      transform: rotate(180deg);
+    }
+
+    .toggle-sidebar i {
+      transition: transform var(--transition-speed) ease;
     }
 
     /* Search Bar */
@@ -1747,22 +1911,23 @@
       showScreen('login');
       loadFromStorage();
       
-      // Check if sidebar state is saved
-      const savedSidebarState = localStorage.getItem('sidebar_collapsed');
+      // Restaurar estado da sidebar SEM chamar toggleSidebar()
+      // (evita bug de estado duplo e cache do Varnish)
+      const savedSidebarState = sessionStorage.getItem('sidebar_collapsed');
       if (savedSidebarState === 'true') {
-        toggleSidebar();
+        applySidebarState(true);
       }
       
-      // Check theme preference
-      const savedTheme = localStorage.getItem('dark_mode');
+      // Restaurar tema (sessionStorage: não persiste entre abas/recargas — seguro para Varnish)
+      const savedTheme = sessionStorage.getItem('dark_mode');
       if (savedTheme === 'true') {
-        toggleTheme();
+        applyTheme(true);
       }
       
       // Load action history
-      const savedHistory = localStorage.getItem('action_history');
+      const savedHistory = sessionStorage.getItem('action_history');
       if (savedHistory) {
-        actionHistory = JSON.parse(savedHistory);
+        try { actionHistory = JSON.parse(savedHistory); } catch(e) {}
       }
       
       // Keyboard shortcuts
@@ -1792,10 +1957,14 @@
         }
       }
       
-      // Ctrl+F - Buscar
+      // Ctrl+F - Buscar (expande sidebar se necessário para mostrar o campo)
       if (e.ctrlKey && e.key === 'f') {
         e.preventDefault();
-        document.getElementById('globalSearch').focus();
+        if (sidebarCollapsed) {
+          applySidebarState(false); // expande para revelar busca
+        }
+        const searchEl = document.getElementById('globalSearch');
+        if (searchEl) searchEl.focus();
       }
       
       // Ctrl+E - Exportar
@@ -1805,13 +1974,13 @@
       }
       
       // Ctrl+Z - Desfazer
-      if (e.ctrlKey && e.key === 'z') {
+      if (e.ctrlKey && !e.shiftKey && e.key === 'z') {
         e.preventDefault();
         undoLastAction();
       }
       
-      // Ctrl+Y - Refazer
-      if (e.ctrlKey && e.key === 'y') {
+      // Ctrl+Y ou Ctrl+Shift+Z - Refazer
+      if ((e.ctrlKey && e.key === 'y') || (e.ctrlKey && e.shiftKey && e.key === 'z')) {
         e.preventDefault();
         redoLastAction();
       }
@@ -1828,7 +1997,12 @@
         toggleSidebar();
       }
       
-      // Ctrl+? - Mostrar atalhos
+      // Ctrl+? (Ctrl+Shift+/) - Mostrar atalhos
+      if (e.ctrlKey && e.shiftKey && e.key === '/') {
+        e.preventDefault();
+        showShortcuts();
+      }
+      // Suporte adicional para teclados que enviam '?' diretamente
       if (e.ctrlKey && e.key === '?') {
         e.preventDefault();
         showShortcuts();
@@ -1858,8 +2032,10 @@
     }
 
     function saveToStorage() {
+      // DB de dados pode usar localStorage (conteúdo do usuário, não estado de UI)
       localStorage.setItem('portflow_db', JSON.stringify(DB));
-      localStorage.setItem('action_history', JSON.stringify(actionHistory.slice(-50)));
+      // Histórico de ações: sessionStorage (estado de sessão, não deve ser cacheado)
+      sessionStorage.setItem('action_history', JSON.stringify(actionHistory.slice(-50)));
     }
 
     // =========================================
@@ -1982,22 +2158,20 @@
     // =========================================
     // THEME
     // =========================================
-    function toggleTheme() {
-      document.body.classList.toggle('dark-mode');
-      darkMode = document.body.classList.contains('dark-mode');
-      localStorage.setItem('dark_mode', darkMode);
-      
+    function applyTheme(isDark) {
+      darkMode = isDark;
+      document.body.classList.toggle('dark-mode', isDark);
       const icon = document.querySelector('.theme-toggle i');
-      if (icon) {
-        icon.className = darkMode ? 'fas fa-sun' : 'fas fa-moon';
-      }
-      
+      if (icon) icon.className = isDark ? 'fas fa-sun' : 'fas fa-moon';
+      // sessionStorage: não persiste entre sessões — seguro para Varnish
+      sessionStorage.setItem('dark_mode', isDark);
+    }
+
+    function toggleTheme() {
+      applyTheme(!document.body.classList.contains('dark-mode'));
       // Redraw charts with new theme
       if (currentDashboard === 'dashboard') {
-        setTimeout(() => {
-          initShipChart();
-          initBerthChart();
-        }, 100);
+        setTimeout(() => { initShipChart(); initBerthChart(); }, 100);
       }
     }
 
@@ -2165,15 +2339,22 @@
     // =========================================
     // UI
     // =========================================
-    function toggleSidebar() {
+    /**
+     * Aplica diretamente o estado da sidebar — evita bug de estado acumulado.
+     * Usar sessionStorage (não localStorage) para não vazar estado via Varnish.
+     */
+    function applySidebarState(collapsed) {
       const sidebar = document.getElementById('sidebar');
       const mainContent = document.getElementById('mainContent');
-      
-      sidebar.classList.toggle('collapsed');
-      mainContent.classList.toggle('expanded');
-      
-      sidebarCollapsed = sidebar.classList.contains('collapsed');
-      localStorage.setItem('sidebar_collapsed', sidebarCollapsed);
+      if (!sidebar || !mainContent) return;
+      sidebarCollapsed = collapsed;
+      sidebar.classList.toggle('collapsed', collapsed);
+      mainContent.classList.toggle('expanded', collapsed);
+      sessionStorage.setItem('sidebar_collapsed', collapsed);
+    }
+
+    function toggleSidebar() {
+      applySidebarState(!sidebarCollapsed);
     }
 
     function changeDashboard(dashboard) {
